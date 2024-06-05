@@ -1,5 +1,6 @@
 import { createContext } from "react";
 import { signInRequest } from "../services/auth";
+import { setCookie } from 'nookies'
 
 type AuthContextType = {
     isAuthenticade: boolean;
@@ -19,6 +20,10 @@ export function AuthProvider({ children }) {
         const { token, user } = await signInRequest({
             email,
             password
+        });
+
+        setCookie(undefined, 'access_token', token, {
+            maxAge: 60 * 60 * 1, // 1 hour
         });
     }
 
