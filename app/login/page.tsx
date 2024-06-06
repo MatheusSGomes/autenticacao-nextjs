@@ -1,14 +1,13 @@
-'use client';
-
 import Head from "next/head";
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../contexts/AuthContext";
 
+
 export default function Login() {
 
   const { register, handleSubmit } = useForm();
-  const { signIn } = useContext(AuthContext)
+  const { signIn } = useContext(AuthContext);
 
   async function handleSignIn(data) {
     await signIn(data);

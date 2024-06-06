@@ -1,7 +1,9 @@
+'use client';
+
 import { createContext, ReactNode, useState } from "react";
 import { signInRequest } from "../services/auth";
 import { setCookie } from 'nookies'
-import Router from "next/router";
+import { useRouter } from "next/navigation";
 
 type User = {
     name: string,
@@ -28,6 +30,7 @@ export const AuthContext = createContext({} as AuthContextType);
 
 export function AuthProvider({ children }: Props) {
     const [user, setUser] = useState<User | null>(null);
+    const router = useRouter();
 
     const isAuthenticade = !!user;
 
@@ -42,7 +45,7 @@ export function AuthProvider({ children }: Props) {
         });
 
         setUser(user);
-        Router.push('/dashboard');
+        router.push('/dashboard');
     }
 
     return (
