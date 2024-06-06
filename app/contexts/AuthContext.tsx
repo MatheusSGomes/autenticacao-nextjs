@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, ReactNode, useState } from "react";
 import { signInRequest } from "../services/auth";
 import { setCookie } from 'nookies'
 import Router from "next/router";
@@ -16,16 +16,20 @@ type SignInData = {
 
 type AuthContextType = {
     isAuthenticade: boolean;
-    user: User;
+    user: User | null;
     signIn: (data: SignInData) => Promise<void>
 }
 
-const AuthContext = createContext({} as AuthContextType);
+interface Props {
+    children?: ReactNode
+}
 
-export function AuthProvider({ children }) {
+export const AuthContext = createContext({} as AuthContextType);
+
+export function AuthProvider({ children }: Props) {
     const [user, setUser] = useState<User | null>(null);
 
-    const isAuthenticade = false;
+    const isAuthenticade = !!user;
 
     async function signIn({ email, password}: SignInData) {
         const { token, user } = await signInRequest({
