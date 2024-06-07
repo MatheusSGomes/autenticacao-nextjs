@@ -1,15 +1,19 @@
 'use client';
 
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
-import { api } from "../services/api";
+import { parseCookies } from "nookies";
+import { useRouter } from "next/navigation";
 
 export default function Dashboard() {
     const { user } = useContext(AuthContext);
+    const { 'access_token': token } = parseCookies();
+    const router = useRouter();
 
-    useEffect(() => {
-        api.get('/users');
-    }, [])
+    if (!token) {
+        router.push('/');
+        return null;
+    }
 
     return (
         <div>
