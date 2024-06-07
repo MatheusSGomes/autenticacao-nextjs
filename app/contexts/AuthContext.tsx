@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { setCookie, parseCookies } from 'nookies';
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { recoverUserInformation, signInRequest } from "../services/auth";
+import { api } from "../services/api";
 
 type User = {
     name: string,
@@ -55,6 +56,8 @@ export function AuthProvider({ children }: Props) {
         setCookie(undefined, 'access_token', token, {
             maxAge: 60 * 60 * 1, // 1 hour
         });
+
+        api.defaults.headers['Authorization'] = `Bearer ${token}`;
 
         setUser(user);
         router.push('/dashboard');
