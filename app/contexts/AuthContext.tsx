@@ -1,9 +1,9 @@
 'use client';
 
-import { createContext, ReactNode, useState } from "react";
-import { signInRequest } from "../services/auth";
-import { setCookie } from 'nookies'
 import { useRouter } from "next/navigation";
+import { setCookie, parseCookies } from 'nookies';
+import { createContext, ReactNode, useEffect, useState } from "react";
+import { recoverUserInformation, signInRequest } from "../services/auth";
 
 type User = {
     name: string,
@@ -33,6 +33,18 @@ export function AuthProvider({ children }: Props) {
     const router = useRouter();
 
     const isAuthenticade = !!user;
+
+    useEffect(() => {
+        const { 'access_token': token } = parseCookies();
+
+        if (token) {
+            recoverUserInformation()
+                .then(response => {
+                    setUser(response.user);
+                })
+        }
+
+    }, []);
 
     async function signIn({ email, password}: SignInData) {
         const { token, user } = await signInRequest({

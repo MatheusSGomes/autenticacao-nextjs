@@ -19,3 +19,15 @@ export async function signInRequest(data: SignInRequestData) {
         }
     }
 }
+
+export async function recoverUserInformation() {
+    await delay();
+
+    return {
+        user: {
+            name: 'Matheus',
+            email: 'matheus@email.com',
+            avatar_url: 'https://github.com/MatheusSGomes.png'
+        }
+    }
+}
